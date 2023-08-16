@@ -19,7 +19,10 @@ def image_to_image(api_key: str, api_url: str, imagefile: str, imagesize: str ="
    headers = {'Content-type': 'application/json', 'Authorization': authorization}
    data = {'image': f"@{imagefile}", 'n':num_images, 'size': imagesize, 'response_format': 'url'}
    response = requests.post(api_url, data=json.dumps(data), headers=headers)
-   return response.json()['data'][0]['url']
+   if response.json()['error']:
+      return response.json()
+   else:
+      return response.json()['data'][0]['url']
 
 def create_image_variation(imagefile: str, imagesize: str ="256x256", num_images: int = 1):
    if use_azure:
@@ -43,9 +46,10 @@ def create_image_variation(imagefile: str, imagesize: str ="256x256", num_images
    return image_urls
 
 def main():
-   imagefile="avatar.png"
+   imagefile="john-doe.png"
    output = image_to_image(openai_api_key,openai_api_image_generation, imagefile)
    print(output)
+   imagefile="jane-doe.png"
    image_urls = create_image_variation(imagefile)
    for image_url in image_urls:
       print(image_url)
