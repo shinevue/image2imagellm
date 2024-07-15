@@ -30,9 +30,9 @@ def create_image_variation(image_file: str, imagesize: str ="256x256", num_image
          openai.organization = openai_org_id
 
    response = openai.Image.create_variation(
-                    image=open(image_file, "rb"),
-                    n=num_images,
-                    size=imagesize)
+      image=open(image_file, "rb"),
+      n=num_images,
+      size=imagesize)
    image_urls = [data['url'] for data in response['data']]
    return image_urls
 
@@ -43,4 +43,4 @@ def main():
       print(image_url)
 
 if __name__ == '__main__':
-    main()
+   main()
